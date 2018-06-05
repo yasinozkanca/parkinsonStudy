@@ -6,21 +6,16 @@ outDirectory = '/media/yasin/912d5d0f-5c5b-494b-bb8c-245aed208848/home/yasin/was
 for i = 3:length(wavDirectory)
     
     [y,Fs] = audioread(strcat(wavPath,wavDirectory(i).name));
-%     [vs,zo] = vadsohn(y,Fs,'n');
+
 try
-    [lev,af,fso,vad] = activlev(y,Fs,'n');
+    [lev,af,fso,vad] = activlev(y,Fs,'n'); %This is where you calculate VAD. It just gives if there is a voice or not at the sample.
 catch
     continue;
 end
-    y = y(vad);
+    y = y(vad); % This is where you pick the voiced parts.
     
     display(i)
     
-%     for k = 1:length(vs)
-%         if vs(k,3) == 1
-%             newWav = [newWav ; y(int64(vs(k,1)/2):int64(vs(k,2)/2),:)];
-%         end
-%         
-%     end
-     audiowrite(strcat(outDirectory,wavDirectory(i).name),y,Fs)
+
+     audiowrite(strcat(outDirectory,wavDirectory(i).name),y,Fs) % This is where you write the new removed silence wavs
 end
